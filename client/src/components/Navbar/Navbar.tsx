@@ -12,7 +12,7 @@ const Navbar = () => {
           <Link to={"/"}>Home</Link>
         </li>
         <li>
-          <Link to={"/gallery"}>Cat Gallery</Link>
+          <Link to={"/gallery?limit=10&breed_ids=All breeds"}>Cat Gallery</Link>
         </li>
       </ul>
 
