@@ -1,1 +1,1 @@
-"# Cat-Gallery" 
+# Cat-Gallery
