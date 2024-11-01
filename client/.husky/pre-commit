@@ -1,4 +1,4 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
+# frontend/.husky/pre-commit
+cd ./client
 
 npx lint-staged
