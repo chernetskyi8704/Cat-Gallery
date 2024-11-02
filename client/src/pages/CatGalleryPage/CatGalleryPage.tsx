@@ -7,9 +7,14 @@ import {
   INITIAL_LIMIT_VALUE,
   LIMIT_OPTIONS,
   INITIAL_BREED_VALUE,
+  INITIAL_PAGE_NUMBER,
 } from "@/utils/constants";
+import Pagination from "@/components/UI/pagination/Pagination";
 
 const CatGalleryPage = () => {
+  const [currentPageNumber, setCurrentPageNumber] =
+    useState<string>(INITIAL_PAGE_NUMBER);
+
   const [breedsValue, setBreedValue] = useState<string>(INITIAL_BREED_VALUE);
   const [limitValue, setLimitValue] = useState<string>(
     INITIAL_LIMIT_VALUE.value,
@@ -24,7 +29,7 @@ const CatGalleryPage = () => {
     isLoading: isImagesLoading,
     isError: imagesError,
     isSuccess: isImagesSuccess,
-  } = useImagesQuery(limitValue, breedsValue);
+  } = useImagesQuery(limitValue, breedsValue, currentPageNumber);
 
   const {
     data: breedsData,
@@ -42,6 +47,8 @@ const CatGalleryPage = () => {
     setSearchParams(searchParams);
   }, [breedsValue, setSearchParams, searchParams]);
 
+  useEffect(() => {}, [currentPageNumber]);
+
   const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
     setBreedValue(selectedValue);
@@ -55,8 +62,17 @@ const CatGalleryPage = () => {
   const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
     setLimitValue(selectedValue);
+    // Тепер коли я обираю select і знаходжусь на сторінці 2, а доступна лише одна сторінка
+    navigate(
+      `/gallery?limit=${selectedValue}&breed_ids=${breedsValue}&page=${INITIAL_PAGE_NUMBER}`,
+    );
+  };
 
-    navigate(`/gallery?limit=${selectedValue}&breed_ids=${breedsValue}`);
+  const handleChangePageNumber = (pageNumber: string) => {
+    setCurrentPageNumber(pageNumber);
+    navigate(
+      `/gallery?limit=${limitValue}&breed_ids=${breedsValue}&page=${pageNumber}`,
+    );
   };
 
   return (
@@ -153,6 +169,15 @@ const CatGalleryPage = () => {
               },
             )}
         </div>
+      </div>
+
+      <div className="flex justify-center mt-4 mb-4">
+        {isImagesSuccess && (
+          <Pagination
+            setCurrentPageNumber={handleChangePageNumber}
+            totalPagesCount={imagesData?.totalPagesCount}
+          />
+        )}
       </div>
 
       {breedsLoading && (

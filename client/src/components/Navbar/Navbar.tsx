@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
-import { INITIAL_LIMIT_VALUE, INITIAL_BREED_VALUE } from "@/utils/constants";
+import {
+  INITIAL_LIMIT_VALUE,
+  INITIAL_BREED_VALUE,
+  INITIAL_PAGE_NUMBER,
+} from "@/utils/constants";
 
 const Navbar = () => {
   return (
@@ -14,7 +18,7 @@ const Navbar = () => {
         </li>
         <li>
           <Link
-            to={`/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${INITIAL_BREED_VALUE}`}
+            to={`/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${INITIAL_BREED_VALUE}&page=${INITIAL_PAGE_NUMBER}`}
           >
             Cat Gallery
           </Link>

@@ -4,11 +4,13 @@ import { API_KEY, BASE_API_URL } from "@/utils/constants";
 interface IQueryParams {
   limit?: string;
   breed_ids?: string;
+  page: string;
 }
 
 interface IImagesResponce {
   images: IImageData[];
   totalImagesCount: number;
+  totalPagesCount: number;
 }
 
 async function fetchTotalImagesCount(breed_ids: string) {
@@ -40,11 +42,13 @@ async function fetchTotalImagesCount(breed_ids: string) {
 export async function fetchImages({
   limit = "10",
   breed_ids = "",
+  page = "1",
 }: IQueryParams): Promise<IImagesResponce> {
   const query = new URLSearchParams({
     has_breeds: String(1),
     limit: String(limit),
     breed_ids: breed_ids,
+    page: String(page), // Додайте page до параметрів запиту
   }).toString();
 
   const url = `${BASE_API_URL}/images/search?${query}`;
@@ -58,16 +62,17 @@ export async function fetchImages({
     fetchTotalImagesCount(breed_ids),
   ]);
 
-  console.log(imagesResponse);
-
   if (!imagesResponse.ok) {
     throw new Error(`Failed to fetch cat images data`);
   }
 
   const data = await imagesResponse.json();
 
+  const totalPagesCount = Math.ceil(totalImagesCount / +limit);
+
   return {
     images: data,
     totalImagesCount: totalImagesCount,
+    totalPagesCount: totalPagesCount,
   };
 }
