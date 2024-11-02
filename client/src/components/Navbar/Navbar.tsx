@@ -4,6 +4,7 @@ import {
   INITIAL_BREED_VALUE,
   INITIAL_PAGE_NUMBER,
 } from "@/utils/constants";
+import FavoritesIconImage from "../../../public/red-heart-icon.png";
 
 const Navbar = () => {
   return (
@@ -26,7 +27,14 @@ const Navbar = () => {
       </ul>
 
       <div className="flex-shrink-0">
-        <Link to={"/favorites"}>Favorites</Link>
+        <Link to={"/favorites"}>
+          <img
+            src={FavoritesIconImage}
+            width={25}
+            height={25}
+            alt="Favorites"
+          />
+        </Link>
       </div>
     </nav>
   );

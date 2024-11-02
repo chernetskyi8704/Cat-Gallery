@@ -1,13 +1,18 @@
+import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
-
 import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
 import CatGalleryPage from "./pages/CatGalleryPage/CatGalleryPage";
 import FavoritePage from "./pages/FavoritePage/FavoritePage";
 import HomePage from "./pages/HomePage/HomePage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+import { initializeLocalStorageValue } from "./utils/localStorageHelpers";
 
 const App = () => {
+  useEffect(() => {
+    initializeLocalStorageValue("fav_cats", []);
+  }, []);
+
   const router = createBrowserRouter([
     {
       path: "/",

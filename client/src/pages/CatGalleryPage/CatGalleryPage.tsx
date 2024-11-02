@@ -36,7 +36,7 @@ const CatGalleryPage = () => {
   }
 
   return (
-    <div className=" min-h-screen flex flex-col">
+    <div className="grow flex flex-col">
       {imagesData && breedsData && (
         <div className="flex justify-center sm:justify-end items-center gap-5 py-4 w-full px-0 sm:px-8 md:px-14">
           <BreedSelect
@@ -67,6 +67,7 @@ const CatGalleryPage = () => {
             <List
               items={imagesData.images}
               renderItems={(image) => {
+                if (!image.breeds) return;
                 const { name, vetstreet_url, id: breedId } = image.breeds[0];
                 return (
                   <ImageItem

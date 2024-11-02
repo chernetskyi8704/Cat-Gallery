@@ -52,9 +52,9 @@ export interface IBreedData {
 }
 
 export interface IImageData {
-  breeds: IBreedData[];
+  breeds?: IBreedData[];
   id: string;
   url: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }

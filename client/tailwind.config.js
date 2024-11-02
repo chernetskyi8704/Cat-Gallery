@@ -8,9 +8,6 @@ export default {
         active: "#E67E22",
         hover: "#FFE3C2",
       },
-      boxShadow: {
-        bottom: "0 4px 10px rgba(0, 0, 0, 0.2)",
-      },
     },
   },
   plugins: [],
