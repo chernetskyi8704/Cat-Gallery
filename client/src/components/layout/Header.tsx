@@ -2,7 +2,7 @@ import Navbar from "../Navbar/Navbar";
 
 const Header = () => {
   return (
-    <header className="p-4 border-b shadow-bottom">
+    <header className="py-4 px-4 sm:px-8 md:px-14 border-b-transparent shadow-bottom">
       <Navbar />
     </header>
   );

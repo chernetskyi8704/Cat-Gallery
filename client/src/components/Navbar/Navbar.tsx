@@ -7,7 +7,7 @@ import {
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center p-4 text-black">
+    <nav className="flex items-center py-4 text-black">
       <div className="flex-shrink-0">
         <Link to={"/"}>Logo</Link>
       </div>

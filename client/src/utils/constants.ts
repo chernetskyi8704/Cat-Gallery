@@ -1,5 +1,5 @@
 export interface ILimitOption {
-  id: string;
+  id: number;
   value: string;
   label: string;
 }

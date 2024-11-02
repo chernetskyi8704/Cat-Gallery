@@ -1,6 +1,7 @@
 import { MouseEvent } from "react";
 
 import PaginationItem from "./PaginationItem";
+import List from "@/components/List/List";
 
 interface PaginationProps {
   setCurrentPageNumber: (value: string) => void;
@@ -21,11 +22,14 @@ const Pagination = ({
   };
 
   return (
-    <ul className="flex gap-3" onClick={handleChangeCurrentPage}>
-      {pageNumbers.map((pageNumber) => (
+    <List
+      items={pageNumbers}
+      renderItems={(pageNumber) => (
         <PaginationItem pageNumber={pageNumber.toString()} key={pageNumber} />
-      ))}
-    </ul>
+      )}
+      className="flex gap-3"
+      onClick={handleChangeCurrentPage}
+    />
   );
 };
 

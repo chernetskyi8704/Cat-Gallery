@@ -12,10 +12,11 @@ const PaginationItem = ({ pageNumber }: PaginationItemProps) => {
   return (
     <li
       className={`flex h-10 w-10 items-center justify-center cursor-pointer rounded-full 
-      ${currentPageNumber === pageNumber ? "bg-active text-[#d8e8f2] animate-background-animation" : "bg-inactive text-[#000]"}
-      hover:bg-active hover:text-[#d8e8f2]`}
+        ${currentPageNumber === pageNumber ? "bg-active text-[#d8e8f2]" : "bg-inactive text-[#000]"}
+        hover:bg-active hover:text-[#d8e8f2]`}
       value={pageNumber}
       key={pageNumber}
+      tabIndex={0}
     >
       {pageNumber}
     </li>

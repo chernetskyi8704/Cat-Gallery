@@ -44,23 +44,24 @@ export async function fetchImages({
   breed_ids = "",
   page = "1",
 }: IQueryParams): Promise<IImagesResponce> {
+  const totalImagesCount = await fetchTotalImagesCount(breed_ids);
+  const offset = (parseInt(page) - 1) * parseInt(limit);
+  const effectiveLimit = Math.min(totalImagesCount - offset, parseInt(limit));
+
   const query = new URLSearchParams({
     has_breeds: String(1),
-    limit: String(limit),
+    limit: String(effectiveLimit),
     breed_ids: breed_ids,
-    page: String(page), // Додайте page до параметрів запиту
+    page: String(page),
   }).toString();
 
   const url = `${BASE_API_URL}/images/search?${query}`;
 
-  const [imagesResponse, totalImagesCount] = await Promise.all([
-    fetch(url, {
-      headers: {
-        "x-api-key": API_KEY,
-      },
-    }),
-    fetchTotalImagesCount(breed_ids),
-  ]);
+  const imagesResponse = await fetch(url, {
+    headers: {
+      "x-api-key": API_KEY,
+    },
+  });
 
   if (!imagesResponse.ok) {
     throw new Error(`Failed to fetch cat images data`);
@@ -68,7 +69,7 @@ export async function fetchImages({
 
   const data = await imagesResponse.json();
 
-  const totalPagesCount = Math.ceil(totalImagesCount / +limit);
+  const totalPagesCount = Math.ceil(totalImagesCount / parseInt(limit));
 
   return {
     images: data,
