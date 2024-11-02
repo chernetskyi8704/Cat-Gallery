@@ -1,11 +1,8 @@
 import { IBreedData } from "@/types/CatData";
-
-const BASE_API = `https://api.thecatapi.com/v1`;
-const API_KEY =
-  "live_GtcA3gWllBIdVMuejOxETNcGkBVURSliPGOUHWhAuuKkyKGSVXiePfyqo8bjNTBd";
+import { API_KEY, BASE_API_URL } from "@/utils/constants";
 
 export async function fetchBreeds(): Promise<IBreedData[]> {
-  const url = `${BASE_API}/breeds`;
+  const url = `${BASE_API_URL}/breeds`;
 
   const res = await fetch(url, {
     headers: {

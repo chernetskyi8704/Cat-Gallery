@@ -3,11 +3,20 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { IBreedData } from "@/types/CatData";
 import useImagesQuery from "@/hooks/useImagesQuery";
 import useBreedsQuery from "@/hooks/useBreedsQuery";
+import {
+  INITIAL_LIMIT_VALUE,
+  LIMIT_OPTIONS,
+  INITIAL_BREED_VALUE,
+} from "@/utils/constants";
 
 const CatGalleryPage = () => {
-  const [breedsValue, setBreedValue] = useState<string>("All breeds");
+  const [breedsValue, setBreedValue] = useState<string>(INITIAL_BREED_VALUE);
+  const [limitValue, setLimitValue] = useState<string>(
+    INITIAL_LIMIT_VALUE.value,
+  );
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const limit = searchParams.get("limit") || "10";
+
   const navigate = useNavigate();
 
   const {
@@ -15,7 +24,7 @@ const CatGalleryPage = () => {
     isLoading: isImagesLoading,
     isError: imagesError,
     isSuccess: isImagesSuccess,
-  } = useImagesQuery(limit, breedsValue);
+  } = useImagesQuery(limitValue, breedsValue);
 
   const {
     data: breedsData,
@@ -25,7 +34,7 @@ const CatGalleryPage = () => {
   } = useBreedsQuery();
 
   useEffect(() => {
-    if (breedsValue === "All breeds") {
+    if (breedsValue === INITIAL_BREED_VALUE) {
       searchParams.delete("breed_ids");
     } else {
       searchParams.set("breed_ids", breedsValue);
@@ -33,24 +42,32 @@ const CatGalleryPage = () => {
     setSearchParams(searchParams);
   }, [breedsValue, setSearchParams, searchParams]);
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
     setBreedValue(selectedValue);
+    setLimitValue(INITIAL_LIMIT_VALUE.value);
 
     navigate(
-      `/gallery?limit=${limit}&breed_ids=${selectedValue !== "All breeds" ? selectedValue : ""}`,
+      `/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${selectedValue !== INITIAL_BREED_VALUE ? selectedValue : ""}`,
     );
+  };
+
+  const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    setLimitValue(selectedValue);
+
+    navigate(`/gallery?limit=${selectedValue}&breed_ids=${breedsValue}`);
   };
 
   return (
     <div className="min-h-screen flex flex-col">
       <div className="flex justify-center items-center py-4">
-        <form>
+        <div>
           <select
             name="breed"
             id="breed-select"
             value={breedsValue}
-            onChange={handleOnChange}
+            onChange={handleBreedChange}
             className="p-2 border border-gray-300 rounded-md"
           >
             <option value="All breeds">All breeds</option>
@@ -61,7 +78,33 @@ const CatGalleryPage = () => {
                 </option>
               ))}
           </select>
-        </form>
+        </div>
+
+        <div>
+          <select
+            name="limit"
+            id="image-limit-select"
+            value={limitValue}
+            onChange={handleLimitChange}
+            className="p-2 border border-gray-300 rounded-md"
+          >
+            <option value={INITIAL_LIMIT_VALUE.value}>
+              {INITIAL_LIMIT_VALUE.label}
+            </option>
+            {isImagesSuccess &&
+              LIMIT_OPTIONS?.map(({ id, value, label }) => {
+                if (
+                  value !== INITIAL_LIMIT_VALUE.value &&
+                  imagesData.totalImagesCount >= +value
+                )
+                  return (
+                    <option key={id} value={value}>
+                      {label}
+                    </option>
+                  );
+              })}
+          </select>
+        </div>
       </div>
 
       <div className="flex-1 flex justify-center">
@@ -81,7 +124,7 @@ const CatGalleryPage = () => {
           )}
 
           {isImagesSuccess &&
-            imagesData?.map(
+            imagesData.images?.map(
               ({
                 id,
                 breeds,
