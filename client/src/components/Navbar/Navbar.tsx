@@ -5,12 +5,15 @@ import {
   INITIAL_PAGE_NUMBER,
 } from "@/utils/constants";
 import FavoritesIconImage from "/red-heart-icon.png";
+import LogoIcon from "/logo-icon.png";
 
 const Navbar = () => {
   return (
-    <nav className="flex items-center py-4 text-black">
+    <nav className="flex items-center text-black">
       <div className="flex-shrink-0">
-        <Link to={"/"}>Logo</Link>
+        <Link to={"/"}>
+          <img src={LogoIcon} width={42} height={42} />
+        </Link>
       </div>
 
       <ul className="flex flex-grow justify-center items-end gap-5">
