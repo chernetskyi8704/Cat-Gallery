@@ -1,22 +1,54 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { getFavoriteCatsFromLocalStorage } from "@/utils/wishlistButtonHelpers";
+import { useCallback, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import List from "@/components/List/List";
-import { IFavoriteCat } from "@/types/IFavoriteCat";
 import ImageItem from "@/components/ImageItem/ImageItem";
 import {
   INITIAL_LIMIT_VALUE,
   INITIAL_BREED_VALUE,
   INITIAL_PAGE_NUMBER,
 } from "@/utils/constants";
+import { useFavoritesStore } from "@/stores/favorite-store";
+import Pagination from "@/components/UI/pagination/Pagination";
+import { useSearchParams } from "react-router-dom";
 
 const FavoritePage = () => {
-  const [favoriteCats, setFavoriteCats] = useState<IFavoriteCat[]>([]);
+  const {
+    favoriteCats,
+    paginatedCats,
+    fetchFavoriteItems,
+    totalFavoriteItemsCount,
+    totalPagesCount,
+    setPage,
+  } = useFavoritesStore();
+
+  const [searchParams] = useSearchParams();
+
+  const currentLimitValue =
+    searchParams.get("limit") || INITIAL_LIMIT_VALUE.value;
+
+  const currentPageValue = searchParams.get("page") || INITIAL_PAGE_NUMBER;
+
+  const navigate = useNavigate();
+
+  const handleChangePageNumber = useCallback(
+    (pageNumber: string) => {
+      if (!pageNumber) return;
+      navigate(`/favorites?limit=${currentLimitValue}&page=${pageNumber}`);
+      setPage(pageNumber);
+    },
+    [navigate, currentLimitValue, setPage],
+  );
 
   useEffect(() => {
-    const favoriteCats = getFavoriteCatsFromLocalStorage();
-    setFavoriteCats(favoriteCats);
-  }, []);
+    fetchFavoriteItems(currentLimitValue, currentPageValue);
+  }, [fetchFavoriteItems, currentLimitValue, currentPageValue]);
+
+  useEffect(() => {
+    if (!paginatedCats.length && +currentPageValue > 1) {
+      const prevPage = +currentPageValue - 1;
+      navigate(`/favorites?limit=${currentLimitValue}&page=${prevPage}`);
+    }
+  }, [navigate, paginatedCats.length, currentPageValue, currentLimitValue]);
 
   return (
     <section className="flex flex-col grow">
@@ -24,32 +56,35 @@ const FavoritePage = () => {
         <>
           <header className="flex justify-between items-center py-6 w-full px-4 sm:px-8 md:px-14">
             <p>Your favorites cats</p>
-            <p>In Favorites ({favoriteCats.length})</p>
+            <p>In Favorites ({totalFavoriteItemsCount})</p>
           </header>
 
           <div className="flex-1 flex justify-center py-4 px-4 sm:px-8 md:px-14">
             <div
               className={` columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-5`}
             >
-              {favoriteCats.length > 0 && (
+              {paginatedCats.length > 0 && (
                 <List
-                  items={favoriteCats}
+                  items={paginatedCats}
                   renderItems={(favoriteCat) => {
                     const image = {
                       id: favoriteCat.id,
                       url: favoriteCat.imageUrl,
                     };
-                    return (
-                      <ImageItem
-                        image={image}
-                        key={favoriteCat.id}
-                        setFavoriteCats={setFavoriteCats}
-                      />
-                    );
+                    return <ImageItem image={image} key={favoriteCat.id} />;
                   }}
                 />
               )}
             </div>
+          </div>
+
+          <div className="flex justify-center my-4">
+            {totalFavoriteItemsCount && (
+              <Pagination
+                setCurrentPageNumber={handleChangePageNumber}
+                totalPagesCount={totalPagesCount}
+              />
+            )}
           </div>
         </>
       ) : (

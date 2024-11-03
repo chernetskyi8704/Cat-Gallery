@@ -10,7 +10,9 @@ import { initializeLocalStorageValue } from "./utils/localStorageHelpers";
 
 const App = () => {
   useEffect(() => {
-    initializeLocalStorageValue("fav_cats", []);
+    if (!localStorage.getItem("fav_cats")) {
+      initializeLocalStorageValue("fav_cats", []);
+    }
   }, []);
 
   const router = createBrowserRouter([

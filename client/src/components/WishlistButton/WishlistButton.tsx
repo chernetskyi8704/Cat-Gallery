@@ -1,13 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import RedHeartImage from "/red-heart-icon.png";
 import TransparentHeartImage from "/transparent-heart-icon.png";
-import {
-  getFavoriteCatsFromLocalStorage,
-  isAlreadyInFavorites,
-  addCatToFavorites,
-  removeCatFromFavorites,
-} from "@/utils/wishlistButtonHelpers";
 import { IFavoriteCat } from "@/types/IFavoriteCat";
+import { useFavoritesStore } from "@/stores/favorite-store.ts";
+import { isAlreadyInFavorites } from "@/utils/wishlistButtonHelpers";
 
 interface IWishlistButtonProps {
   catImageId: string;
@@ -15,28 +11,24 @@ interface IWishlistButtonProps {
   setFavoriteCats?: React.Dispatch<React.SetStateAction<IFavoriteCat[]>>;
 }
 
-const WishlistButton = ({
-  catImageId,
-  imageUrl,
-  setFavoriteCats,
-}: IWishlistButtonProps) => {
-  const [isInWishlist, setIsInWishlist] = useState<boolean>(false);
+const WishlistButton = ({ catImageId, imageUrl }: IWishlistButtonProps) => {
+  const [isImageInFavorites, setIsImageInFavorites] = useState<boolean>(false);
+
+  const { favoriteCats, addFavoriteItem, removeFavoriteItem } =
+    useFavoritesStore();
 
   useEffect(() => {
-    const favoriteCatsArray = getFavoriteCatsFromLocalStorage();
-    const isCatImageInFavorites = isAlreadyInFavorites(
-      catImageId,
-      favoriteCatsArray,
-    );
-    setIsInWishlist(isCatImageInFavorites);
-  }, [catImageId]);
+    const isInFavorites = isAlreadyInFavorites(catImageId, favoriteCats);
+    setIsImageInFavorites(isInFavorites);
+  }, [catImageId, favoriteCats]);
 
-  const handleToggleWishlist = async () => {
-    setIsInWishlist((prev) => !prev);
-    if (isInWishlist && setFavoriteCats) {
-      removeCatFromFavorites(catImageId, setFavoriteCats);
+  const handleToggleWishlist = () => {
+    setIsImageInFavorites((prev) => !prev);
+
+    if (isImageInFavorites) {
+      removeFavoriteItem(catImageId);
     } else {
-      addCatToFavorites({ id: catImageId, imageUrl });
+      addFavoriteItem({ id: catImageId, imageUrl });
     }
   };
 
@@ -44,7 +36,7 @@ const WishlistButton = ({
     <button className="relative" onClick={handleToggleWishlist}>
       <img
         alt="Like button"
-        src={isInWishlist ? RedHeartImage : TransparentHeartImage}
+        src={isImageInFavorites ? RedHeartImage : TransparentHeartImage}
         width={32}
         height={32}
       />

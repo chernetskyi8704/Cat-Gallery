@@ -27,7 +27,9 @@ const Navbar = () => {
       </ul>
 
       <div className="flex-shrink-0">
-        <Link to={"/favorites"}>
+        <Link
+          to={`/favorites?limit=${INITIAL_LIMIT_VALUE.value}&page=${INITIAL_PAGE_NUMBER}`}
+        >
           <img
             src={FavoritesIconImage}
             width={25}
