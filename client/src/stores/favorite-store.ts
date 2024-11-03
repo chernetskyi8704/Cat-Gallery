@@ -64,6 +64,7 @@ export const useFavoritesStore = create<IFavoriteStore>()((set) => ({
       return {
         favoriteCats: updatedFavorites,
         paginatedCats: updatedPaginated,
+        totalFavoriteItemsCount: --state.totalFavoriteItemsCount,
       };
     });
   },

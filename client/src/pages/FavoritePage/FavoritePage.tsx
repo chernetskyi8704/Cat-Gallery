@@ -79,7 +79,7 @@ const FavoritePage = () => {
           </div>
 
           <div className="flex justify-center my-4">
-            {totalFavoriteItemsCount && (
+            {favoriteCats.length && (
               <Pagination
                 setCurrentPageNumber={handleChangePageNumber}
                 totalPagesCount={totalPagesCount}
