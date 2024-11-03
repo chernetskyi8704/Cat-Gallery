@@ -44,7 +44,7 @@ const ImageItem = ({
         </div>
       )}
 
-      <div className="absolute top-[8px] right-[16px] z-888">
+      <div className="w-[50px] h-[50px] absolute top-[8px] flex  items-center backdrop-blur-lg justify-center rounded-full right-[16px] z-20  bg-inactive bg-opacity-60">
         <WishlistButton
           catImageId={id}
           imageUrl={url}
