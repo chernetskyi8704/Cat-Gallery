@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchBreeds } from "@/api/cats-breeds";
 
 const useBreedsQuery = () => {
-  return useQuery({
+  return useSuspenseQuery({
     queryFn: () => fetchBreeds(),
     queryKey: ["cats-breeds"],
     staleTime: 300000,

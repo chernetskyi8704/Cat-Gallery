@@ -1,8 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchImages } from "@/api/cats-images";
 
-const useImagesQuery = (limit: string, breedsValue: string, page: string) => {
-  return useQuery({
+const useImagesQuery = ({
+  limit,
+  breedsValue,
+  page,
+}: {
+  limit: string;
+  breedsValue: string;
+  page: string;
+}) => {
+  return useSuspenseQuery({
     queryFn: () =>
       fetchImages({
         limit: limit,

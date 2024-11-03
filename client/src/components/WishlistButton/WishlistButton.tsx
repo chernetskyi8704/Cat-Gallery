@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import RedHeartImage from "/public/red-heart-icon.png";
+import RedHeartImage from "/red-heart-icon.png";
 import TransparentHeartImage from "/transparent-heart-icon.png";
 import {
   getFavoriteCatsFromLocalStorage,

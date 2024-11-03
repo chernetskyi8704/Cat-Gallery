@@ -1,17 +1,16 @@
 import React from "react";
+import { INITIAL_BREED_VALUE } from "@/utils/constants";
 
 interface IBreedSelectProps {
   breedsValue: string;
   handleBreedChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   breedsData: { id: string; name: string }[];
-  isBreedsSuccess: boolean;
 }
 
 const BreedSelect = ({
   breedsValue,
   handleBreedChange,
   breedsData,
-  isBreedsSuccess,
 }: IBreedSelectProps) => {
   return (
     <select
@@ -19,11 +18,10 @@ const BreedSelect = ({
       id="breed-select"
       value={breedsValue}
       onChange={handleBreedChange}
-      className={`p-2 bg-gray-100 border-2 rounded-lg hover:border-hover`}
+      className={`common-button-select`}
     >
-      <option value="All breeds">All breeds</option>
-      {isBreedsSuccess &&
-        breedsData &&
+      <option value={INITIAL_BREED_VALUE}>All breeds</option>
+      {breedsData &&
         breedsData.map(({ id, name }) => (
           <option key={id} value={id}>
             {name}

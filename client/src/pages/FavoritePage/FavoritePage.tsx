@@ -62,7 +62,7 @@ const FavoritePage = () => {
           </p>
           <Link
             to={`/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${INITIAL_BREED_VALUE}&page=${INITIAL_PAGE_NUMBER}`}
-            className="inline-block px-8 py-4 text-black font-medium bg-inactive border-2 border-transparent hover:bg-hover hover:border-active rounded-full shadow transition duration-300 ease-in-out"
+            className="redirect-btn"
           >
             View All Cats
           </Link>

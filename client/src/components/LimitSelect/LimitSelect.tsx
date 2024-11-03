@@ -5,7 +5,6 @@ interface LimitSelectProps {
   limitValue: string;
   handleLimitChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   imagesData: { totalImagesCount: number };
-  isImagesSuccess: boolean;
   initialLimitValue: ILimitOption;
   limitOptionsArray: ILimitOption[];
 }
@@ -14,7 +13,6 @@ const LimitSelect = ({
   limitValue,
   handleLimitChange,
   imagesData,
-  isImagesSuccess,
   initialLimitValue,
   limitOptionsArray,
 }: LimitSelectProps) => {
@@ -24,11 +22,11 @@ const LimitSelect = ({
       id="image-limit-select"
       value={limitValue}
       onChange={handleLimitChange}
-      className={`p-2 bg-gray-100 border-2 rounded-lg hover:border-hover`}
+      className={`common-button-select`}
     >
       <option value={initialLimitValue.value}>{initialLimitValue.label}</option>
-      {isImagesSuccess &&
-        imagesData &&
+
+      {imagesData &&
         limitOptionsArray?.map(({ id, value, label }) => {
           if (
             value !== initialLimitValue.value &&

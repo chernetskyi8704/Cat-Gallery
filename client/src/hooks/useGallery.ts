@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import useImagesQuery from "./useImagesQuery";
 import useBreedsQuery from "./useBreedsQuery";
@@ -9,78 +9,78 @@ import {
 } from "@/utils/constants";
 
 const useGallery = () => {
-  const [currentPageNumber, setCurrentPageNumber] =
-    useState(INITIAL_PAGE_NUMBER);
-  const [breedsValue, setBreedValue] = useState(INITIAL_BREED_VALUE);
-  const [limitValue, setLimitValue] = useState(INITIAL_LIMIT_VALUE.value);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const currentLimitValue =
+    searchParams.get("limit") || INITIAL_LIMIT_VALUE.value;
+  const currentPageNumber = searchParams.get("page") || INITIAL_PAGE_NUMBER;
+  const currentBreedValue =
+    searchParams.get("breed_ids") || INITIAL_BREED_VALUE;
+
   const navigate = useNavigate();
 
-  const {
-    data: imagesData,
-    isLoading: isImagesLoading,
-    isError: isImagesError,
-    isSuccess: isImagesSuccess,
-  } = useImagesQuery(limitValue, breedsValue, currentPageNumber);
+  const { data: imagesData } = useImagesQuery({
+    limit: currentLimitValue,
+    breedsValue: currentBreedValue,
+    page: currentPageNumber,
+  });
 
-  const {
-    data: breedsData,
-    isLoading: isBreedsLoading,
-    isError: isBreedsError,
-    isSuccess: isBreedsSuccess,
-  } = useBreedsQuery();
+  const { data: breedsData } = useBreedsQuery();
 
-  useEffect(() => {
-    if (breedsValue === INITIAL_BREED_VALUE) {
-      searchParams.delete("breed_ids");
-    } else {
-      searchParams.set("breed_ids", breedsValue);
-    }
-    setSearchParams(searchParams);
-  }, [breedsValue, setSearchParams, searchParams]);
+  const handleBreedChange = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValue = event.target.value;
+      navigate(
+        `/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${selectedValue !== INITIAL_BREED_VALUE ? selectedValue : ""}&page=${INITIAL_PAGE_NUMBER}`,
+      );
+    },
+    [navigate],
+  );
 
-  const handleBreedChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    setBreedValue(selectedValue);
-    setLimitValue(INITIAL_LIMIT_VALUE.value);
+  const handleImageClick = useCallback(
+    (breedImageId: string) => {
+      if (!breedImageId) return;
+      navigate(
+        `/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${breedImageId}&page=${INITIAL_PAGE_NUMBER}`,
+      );
+    },
+    [navigate],
+  );
 
-    navigate(
-      `/gallery?limit=${INITIAL_LIMIT_VALUE.value}&breed_ids=${selectedValue !== INITIAL_BREED_VALUE ? selectedValue : ""}`,
-    );
-  };
+  const handleLimitChange = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      const selectedValue = event.target.value;
+      if (!selectedValue) return;
+      navigate(
+        `/gallery?limit=${selectedValue}&breed_ids=${currentBreedValue}&page=${INITIAL_PAGE_NUMBER}`,
+      );
+    },
+    [navigate, currentBreedValue],
+  );
 
-  const handleLimitChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-    setLimitValue(selectedValue);
-    setCurrentPageNumber(INITIAL_PAGE_NUMBER);
-    navigate(
-      `/gallery?limit=${selectedValue}&breed_ids=${breedsValue}&page=${INITIAL_PAGE_NUMBER}`,
-    );
-  };
+  const handleChangePageNumber = useCallback(
+    (pageNumber: string) => {
+      if (!pageNumber) return;
+      navigate(
+        `/gallery?limit=${currentLimitValue}&breed_ids=${currentBreedValue}&page=${pageNumber}`,
+      );
+    },
+    [navigate, currentLimitValue, currentBreedValue],
+  );
 
-  const handleChangePageNumber = (pageNumber: string) => {
-    setCurrentPageNumber(pageNumber);
-    navigate(
-      `/gallery?limit=${limitValue}&breed_ids=${breedsValue}&page=${pageNumber}`,
-    );
-  };
+  const navigateBack = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
 
   return {
-    currentPageNumber,
-    breedsValue,
-    limitValue,
+    currentBreedValue,
+    currentLimitValue,
     imagesData,
     breedsData,
-    isImagesLoading,
-    isImagesError,
-    isImagesSuccess,
-    isBreedsLoading,
-    isBreedsError,
-    isBreedsSuccess,
     handleBreedChange,
     handleLimitChange,
     handleChangePageNumber,
-    setBreedValue,
+    handleImageClick,
+    navigateBack,
   };
 };
 

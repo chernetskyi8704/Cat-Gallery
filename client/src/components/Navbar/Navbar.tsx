@@ -4,7 +4,7 @@ import {
   INITIAL_BREED_VALUE,
   INITIAL_PAGE_NUMBER,
 } from "@/utils/constants";
-import FavoritesIconImage from "../../../public/red-heart-icon.png";
+import FavoritesIconImage from "/red-heart-icon.png";
 
 const Navbar = () => {
   return (
