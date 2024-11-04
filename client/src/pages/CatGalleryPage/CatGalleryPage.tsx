@@ -11,6 +11,7 @@ const CatGalleryPage = () => {
   const {
     currentBreedValue,
     currentLimitValue,
+    currentPageNumber,
     imagesData,
     breedsData,
     handleBreedChange,
@@ -72,7 +73,8 @@ const CatGalleryPage = () => {
         {imagesData && (
           <Pagination
             setCurrentPageNumber={handleChangePageNumber}
-            totalPagesCount={imagesData.totalPagesCount}
+            totalPagesNumber={imagesData.totalPagesCount}
+            currentPageNumber={currentPageNumber}
           />
         )}
       </div>

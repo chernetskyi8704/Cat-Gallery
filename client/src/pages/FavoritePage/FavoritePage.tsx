@@ -82,7 +82,8 @@ const FavoritePage = () => {
             {favoriteCats.length && (
               <Pagination
                 setCurrentPageNumber={handleChangePageNumber}
-                totalPagesCount={totalPagesCount}
+                totalPagesNumber={totalPagesCount}
+                currentPageNumber={currentPageValue}
               />
             )}
           </div>

@@ -74,6 +74,7 @@ const useGallery = () => {
   return {
     currentBreedValue,
     currentLimitValue,
+    currentPageNumber,
     imagesData,
     breedsData,
     handleBreedChange,

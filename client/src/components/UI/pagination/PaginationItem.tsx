@@ -1,18 +1,16 @@
-import { INITIAL_PAGE_NUMBER } from "@/utils/constants";
-import { useSearchParams } from "react-router-dom";
-
 interface PaginationItemProps {
   pageNumber: string;
+  currentPageNumber: string;
 }
 
-const PaginationItem = ({ pageNumber }: PaginationItemProps) => {
-  const [searchParams] = useSearchParams();
-  const currentPageNumber = searchParams.get("page") || INITIAL_PAGE_NUMBER;
-
+const PaginationItem = ({
+  pageNumber,
+  currentPageNumber,
+}: PaginationItemProps) => {
   return (
     <li
       className={`flex h-10 w-10 items-center justify-center cursor-pointer rounded-full 
-        ${currentPageNumber === pageNumber ? "bg-active text-[#d8e8f2]" : "bg-inactive text-[#000]"}
+        ${currentPageNumber === pageNumber ? "bg-active text-inactive" : "bg-inactive text-active"}
         hover:bg-active hover:text-[#d8e8f2]`}
       value={pageNumber}
       key={pageNumber}

@@ -14,7 +14,7 @@ const useImagesQuery = ({
     queryFn: () =>
       fetchImages({
         limit: limit,
-        breed_ids: breedsValue !== "All breeds" ? breedsValue : "",
+        breed_ids: breedsValue,
         page,
       }),
     queryKey: ["cats-images", breedsValue, limit, page],
