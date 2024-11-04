@@ -37,7 +37,6 @@ const ImageItem = ({
           <button
             onClick={() => {
               handleImageClick(breedId);
-              console.log(1);
             }}
             className="text-gray-600 after:content-[''] after:absolute after:inset-0"
           />
