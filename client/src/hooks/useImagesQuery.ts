@@ -1,4 +1,4 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchImages } from "@/api/cats-images";
 
 const useImagesQuery = ({
@@ -10,7 +10,7 @@ const useImagesQuery = ({
   breedsValue: string;
   page: string;
 }) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryFn: (meta) =>
       fetchImages(
         {
@@ -21,6 +21,7 @@ const useImagesQuery = ({
         meta,
       ),
     queryKey: ["cats-images", breedsValue, limit, page],
+    placeholderData: keepPreviousData,
   });
 };
 

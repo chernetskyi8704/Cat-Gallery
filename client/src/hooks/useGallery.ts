@@ -18,7 +18,7 @@ const useGallery = () => {
 
   const navigate = useNavigate();
 
-  const { data: imagesData } = useImagesQuery({
+  const { data: imagesData, isPlaceholderData } = useImagesQuery({
     limit: currentLimitValue,
     breedsValue: currentBreedValue,
     page: currentPageNumber,
@@ -77,6 +77,7 @@ const useGallery = () => {
     currentPageNumber,
     imagesData,
     breedsData,
+    isPlaceholderData,
     handleBreedChange,
     handleLimitChange,
     handleChangePageNumber,

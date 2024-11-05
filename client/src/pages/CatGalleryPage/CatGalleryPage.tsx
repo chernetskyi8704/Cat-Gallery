@@ -14,6 +14,7 @@ const CatGalleryPage = () => {
     currentPageNumber,
     imagesData,
     breedsData,
+    isPlaceholderData,
     handleBreedChange,
     handleLimitChange,
     handleChangePageNumber,
@@ -64,7 +65,10 @@ const CatGalleryPage = () => {
                 />
               );
             }}
-            className={`columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-5`}
+            className={
+              `columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-5` +
+              (isPlaceholderData ? " opacity-50 pointer-events-none" : "")
+            }
           />
         )}
       </div>
