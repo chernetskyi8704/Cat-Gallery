@@ -1,7 +1,7 @@
 import { IImageData } from "@/types/CatData";
 import { API_KEY, BASE_API_URL } from "@/utils/constants";
 
-interface IQueryParams {
+interface IFetchImagesParams {
   limit?: string;
   breed_ids?: string;
   page: string;
@@ -13,11 +13,10 @@ interface IImagesResponse {
   totalPagesCount: number;
 }
 
-export async function fetchImages({
-  limit = "10",
-  breed_ids = "",
-  page = "1",
-}: IQueryParams): Promise<IImagesResponse> {
+export async function fetchImages(
+  { limit = "10", breed_ids = "", page = "1" }: IFetchImagesParams,
+  { signal }: { signal: AbortSignal },
+): Promise<IImagesResponse> {
   const query = new URLSearchParams({
     has_breeds: String(1),
     limit: String(limit),
@@ -31,6 +30,7 @@ export async function fetchImages({
     headers: {
       "x-api-key": API_KEY,
     },
+    signal,
   });
 
   if (!imagesResponse.ok) {
@@ -38,7 +38,6 @@ export async function fetchImages({
   }
 
   const data = await imagesResponse.json();
-
   const totalImagesCount = parseInt(
     imagesResponse.headers.get("Pagination-Count") || "0",
   );

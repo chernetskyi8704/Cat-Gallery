@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "@/api/query-client";
 
 import AppLayout from "../components/layout/AppLayout";
@@ -36,6 +37,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

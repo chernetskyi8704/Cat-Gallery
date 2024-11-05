@@ -3,9 +3,8 @@ import { fetchBreeds } from "@/api/cats-breeds";
 
 const useBreedsQuery = () => {
   return useSuspenseQuery({
-    queryFn: () => fetchBreeds(),
+    queryFn: (meta) => fetchBreeds(meta),
     queryKey: ["cats-breeds"],
-    staleTime: 300000,
   });
 };
 

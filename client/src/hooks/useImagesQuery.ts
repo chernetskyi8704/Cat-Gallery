@@ -11,14 +11,16 @@ const useImagesQuery = ({
   page: string;
 }) => {
   return useSuspenseQuery({
-    queryFn: () =>
-      fetchImages({
-        limit: limit,
-        breed_ids: breedsValue,
-        page,
-      }),
+    queryFn: (meta) =>
+      fetchImages(
+        {
+          limit: limit,
+          breed_ids: breedsValue,
+          page,
+        },
+        meta,
+      ),
     queryKey: ["cats-images", breedsValue, limit, page],
-    staleTime: 3000000,
   });
 };
 
