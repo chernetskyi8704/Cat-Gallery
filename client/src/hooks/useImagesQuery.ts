@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { fetchImages } from "@/api/cats-images";
+import { catsImagesApi } from "@/api/cats-images-api";
 
 const useImagesQuery = ({
   limit,
@@ -11,16 +11,7 @@ const useImagesQuery = ({
   page: string;
 }) => {
   return useQuery({
-    queryFn: (meta) =>
-      fetchImages(
-        {
-          limit: limit,
-          breed_ids: breedsValue,
-          page,
-        },
-        meta,
-      ),
-    queryKey: ["cats-images", breedsValue, limit, page],
+    ...catsImagesApi.getImagesQueryOptions({ limit, breedsValue, page }),
     placeholderData: keepPreviousData,
   });
 };

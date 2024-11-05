@@ -1,10 +1,9 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { fetchBreeds } from "@/api/cats-breeds";
+import { breedsApi } from "@/api/cats-breeds.t-api";
 
 const useBreedsQuery = () => {
   return useSuspenseQuery({
-    queryFn: (meta) => fetchBreeds(meta),
-    queryKey: ["cats-breeds"],
+    ...breedsApi.getBreedsQueryOptions(),
   });
 };
 
