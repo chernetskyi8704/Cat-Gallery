@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { breedsApi } from "@/api/cats-breeds.t-api";
+import { breedsApi } from "@/api/cats-breeds-api";
 
 const useBreedsQuery = () => {
   return useSuspenseQuery({
