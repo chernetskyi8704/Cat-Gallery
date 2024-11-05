@@ -5,7 +5,7 @@ import { queryOptions } from "@tanstack/react-query";
 interface IFetchImagesParams {
   limit?: string;
   breed_ids?: string;
-  page: string;
+  page?: string;
 }
 
 interface IImagesResponse {
@@ -52,13 +52,13 @@ export const catsImagesApi = {
     };
   },
   getImagesQueryOptions: ({
-    breedsValue,
-    limit,
-    page,
+    limit = "10",
+    breedsValue = "",
+    page = "1",
   }: {
-    limit: string;
-    breedsValue: string;
-    page: string;
+    limit?: string;
+    breedsValue?: string;
+    page?: string;
   }) => {
     return queryOptions({
       queryFn: (meta) =>
