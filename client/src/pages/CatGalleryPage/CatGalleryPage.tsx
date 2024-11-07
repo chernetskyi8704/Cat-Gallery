@@ -52,7 +52,7 @@ const CatGalleryPage = () => {
             items={imagesData.images}
             renderItems={(image) => {
               if (!image.breeds) return;
-              const { name, vetstreet_url, id: breedId } = image.breeds[0];
+              const { name = "", vetstreet_url, id: breedId } = image.breeds[0];
               return (
                 <ImageItem
                   breedsValue={currentBreedValue}
